@@ -1,42 +1,52 @@
-const fs = require('fs');
-const path = './data.json';
+let ourClients = []
+    
+class User {
 
-// Read the existing data from the JSON file
-function readData() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path, 'utf8', (err, data) => {
-            if (err) reject(err);
-            resolve(JSON.parse(data));
-        });
-    });
-}
-
-// Write data to the JSON file
-function writeData(data) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(path, JSON.stringify(data, null, 2), 'utf8', (err) => {
-            if (err) reject(err);
-            resolve('Data written successfully');
-        });
-    });
-}
-
-// Example usage
-async function main() {
-    try {
-        // Read existing data
-        let data = await readData();
-        console.log('Current Data:', data);
-
-        // Modify data
-        data.users.push({ id: 3, name: 'Charlie' });
-
-        // Write updated data
-        await writeData(data);
-        console.log('Data updated successfully');
-    } catch (err) {
-        console.error('Error:', err);
+    constructor(name, contact, country, birthDay) {
+        this.name = name;
+        this.contact = contact;
+        this.country = country;
+        this.birthDay = birthDay;
     }
+
+    toString() {
+    return `${this.contact}`;
+  }
+    
+    
 }
 
-main();
+
+function addUser() {
+    let name = document.getElementById('firstName').value;
+    let country = document.getElementById('birthCountry').value;
+    let bd = document.getElementById('dob').value;
+    let contact = String(document.getElementById('contactDetails').value);
+    let myUser = new User(name, contact, country, bd)
+    ourClients[ourClients.length] = myUser
+    console.log(userExists("0671401556"))
+    
+}
+
+
+function userExists(contact) {
+
+    for(let j = 0; j < ourClients.length; j++) {
+        count = 0
+        for(let i = 0; i < contact.length; i++) {
+            if(ourClients[j].contact.length != contact.length) {continue}
+            if(ourClients[j].contact[i] == contact[i]) {count++}
+        }
+        if(count == contact.length) {
+            window.location.href = 'get_points.html'; // send user to different page when successfully logged in
+            return true
+        }
+    }
+    return false
+}
+
+
+
+
+
+
